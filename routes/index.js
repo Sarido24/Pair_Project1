@@ -4,7 +4,7 @@ const routerRegister = require('./register');
 const routerPosts = require('./posts');
 const Controller = require('../controllers/controller');
 
-router.get('/', Controller.home);
+router.get('/', Controller.showLandingPage);
 router.use('/register', routerRegister);
 router.use('/posts', routerPosts);
 

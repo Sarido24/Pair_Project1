@@ -3,7 +3,7 @@ const { User, Profile, Post, Tag, Comment } = require('../models')
 const formatDate = require('../helpers/formatDate');
 
 class Controller {
-  static home(req, res) {
+  static showLandingPage(req, res) {
     const options = {
       order: [['createdAt', 'DESC']],
       include: [
@@ -25,8 +25,7 @@ class Controller {
     };
     Promise.all([Post.postsPerMonth(), Post.findAll(options)])
       .then(([{ count: postsPerMonth }, posts]) => {
-        console.log(posts[0].Tags);
-        res.render('home', { posts, formatDate, postsPerMonth });
+        res.render('landing-page', { posts, formatDate, postsPerMonth });
       })
       .catch(err => {
         console.error(err);
@@ -87,7 +86,6 @@ class Controller {
     };
     Post.findByPk(+id, options)
       .then(post => {
-        // console.log(post.UserComments[0].Comment);
         res.render('post-detail', { post, formatDate, error });
       })
       .catch(err => {
@@ -160,7 +158,6 @@ class Controller {
     tags = tags.split(',');
     Post.findByPk(+id, options)
       .then(post => {
-        console.log(post);
         postToBeUpdated = post;
         return post.removeTags(post.Tags);
       })
@@ -199,8 +196,6 @@ class Controller {
     Post.findByPk(+id, options)
       .then(post => {
         postToBeRemoved = post;
-        // console.log(post.Tags, '<<<');
-        // console.log(post.UserComments, '<<<');
         return Promise.all([
           post.removeTags(post.Tags),
           post.removeUserComments(post.UserComments)
@@ -213,17 +208,9 @@ class Controller {
         res.redirect('/posts');
       })
       .catch(err => {
-        console.log(err);
+        console.error(err);
         res.send(err);
-      })
-    // Post.destroy(options)
-    //   .then(() => {
-    //     res.redirect('/posts');
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //     res.send(err);
-    //   })
+      });
   }
 
   static addComment(req, res) {
