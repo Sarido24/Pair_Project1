@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <style>
+    .post-description {
+      white-space: pre-line;
+    }
+  </style>
+  <title>DiscussIt - <%= post.title %></title>
+</head>
+
+<body>
+  <%- include('partials/navbar') %>
+  <div class="container-fluid"></div>
+  <div class="post row">
+    <h1 class="post-title text-center mt-4">
+      <%= post.title %>
+    </h1>
+    <p class="poster-name mb-0 text-center">
+      <% if (post.User.Profile && post.User.Profile.fullName && post.User.Profile.lastName) { %>
+        Posted by: <%= post.User.Profile.fullName %> <%= post.User.Profile.lastName %>
+      <% } else { %>
+        Posted by: <%= post.User.username %>
+      <% } %>
+    </p>
+    <p class="post-timestamp mb-0 text-center">
+      Posted at: <%= formatDate(post.createdAt) %>
+    </p>
+    <p class="post-tags text-center">
+      Tags: <%= post.Tags.flat(1).map(tag => tag.name).join(', ') %>
+    </p>
+    <div class="post-image d-flex justify-content-center">
+      <img class="img-fluid img-thumbnail" src="<%= post.imageUrl %>" alt="An image related to the post <%= post.title %>">
+    </div>
+    <div class="post-description-box px-5 mt-4">
+      <p class="post-description px-3 py-3"><%= post.description %></p>
+    </div>
+  </div>
+  <div class="comments row">
+    <h2 class="text-center mt-4 mb-3">Comments</h1>
+    <% if (post.UserComments.length) { %>
+      <% post.UserComments?.map(user => { %>
+        <div class="comment-outerbox px-5 col-sm-12">
+          <div class="comment-innerbox border rounded px-3 py-3 mb-3">
+            <% if (user.Profile && user.Profile.fullName && user.Profile.lastName) { %>
+              <p class="commenter mb-0"><b><%= `${user.Profile.fullName} ${user.Profile.lastName}` %> commented:</b></p>
+            <% } else { %>
+              <p class="commenter mb-0"><b><%= user.username %> commented:</b></p>
+            <% } %>
+            <p class="comment"><%= user.Comment.content %></p>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p class="text-center">No comments yet</p>
+    <% } %>
+    <div class="comment-box px-5">
+      <% if (error) { %>
+        <p class="text-danger text-center"><%= error %></p>
+      <% } %>
+      <form action="/posts/comment/<%= post.id %>" method="post">
+        <textarea class="form-control mb-3" name="content" id="comment" rows="5"></textarea>
+        <button class="btn btn-primary" type="submit">Add Comment</button>
+      </form>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  
+</body>
+
+</html>

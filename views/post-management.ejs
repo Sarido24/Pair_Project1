@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border: 1px solid;
+      padding: .5rem;
+    }
+  </style>
+  <title>DiscussIt - Manage Posts</title>
+</head>
+
+<body>
+  <%- include('partials/navbar') %>
+  <header class="container-fluid text-center">
+    <h1>Manage Posts</h1>
+  </header>
+  <a class="btn btn-primary" href="/posts/add">Add New Post</a>
+  <form method="get">
+    <input type="text" name="title" value="<%= title %>">
+    <button class="btn btn-secondary" type="submit">Search</button>
+  </form>
+  <main class="container-sm">
+    <table>
+      <thead>
+        <tr>
+          <th>
+            No.
+          </th>
+          <th>
+            Title
+          </th>
+          <th>
+            Description
+          </th>
+          <th>
+            Action
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% posts.forEach((post, i) => { %>
+          <tr>
+            <td>
+              <%= i + 1 %>
+            </td>
+            <td>
+              <%= post.title %>
+            </td>
+            <td>
+              <%= post.description %>
+            </td>
+            <td>
+              <a class="btn btn-primary" href="/posts/edit/<%= post.id %>">Edit</a>
+              <a class="btn btn-danger" href="/posts/delete/<%= post.id %>">Delete</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
