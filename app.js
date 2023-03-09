@@ -1,6 +1,5 @@
 const express = require('express')
 const registerRouter = require('./routes/register')
-const postsRouter = require('./routes/posts')
 const app = express()
 const session = require('express-session')
 const port = 3000
@@ -19,7 +18,6 @@ app.use(session({
     }
   }))
 app.use(registerRouter)
-app.use('/posts', postsRouter)
 
 app.listen(port, () => {
   console.log(`TEST GAN ${port}`)

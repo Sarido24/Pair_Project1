@@ -11,13 +11,51 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Post.belongsTo(models.User)
+      Post.belongsToMany(models.Tag, { through: models.TagPost })
+      Post.belongsToMany(models.User, { through: models.Comment, as: 'UserComments' })
       // define association here
+    }
+    
+    static postsPerMonth() {
+      const options = {
+        attributes: [sequelize.fn('date_part', 'month', sequelize.col('createdAt'))],
+        group: [[sequelize.fn('date_part', 'month', sequelize.col('createdAt'))]]
+      }
+      return Post.findAndCountAll(options);
+    }
+
+    shortDesc() {
+      if (this.description.length > 25) {
+        return `${this.description.substring(0, 23)}...`
+      }
+      return this.description;
     }
   }
   Post.init({
-    title: DataTypes.STRING,
-    imageUrl: DataTypes.STRING,
-    description: DataTypes.TEXT,
+    title: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'Title must not be empty!'
+        }
+      }
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: 'Image URL must not be empty!'
+        }
+      }
+    },
+    description: {
+      type: DataTypes.TEXT,
+      validate: {
+        notEmpty: {
+          msg: 'Description must not be empty!'
+        }
+      }
+    },
     UserId: DataTypes.INTEGER
   }, {
     sequelize,

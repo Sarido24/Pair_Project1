@@ -1,5 +1,7 @@
-const {User, Profile, Post} = require('../models/index')
+const {Op} = require('sequelize')
+const {User, Profile, Post, Tag, Comment} = require('../models/index')
 const verify = require('../helpers/verifyLogin')
+const formatDate = require('../helpers/formatDate')
 class Controller{
 
     static home(req, res){
@@ -157,7 +159,7 @@ class Controller{
                     model: User,
                     include: {
                         model: Profile,
-                        attributes: ['fullName', 'lastName']
+                        attributes: ['firstName', 'lastName']
                     }
                 },
                 {
@@ -171,7 +173,7 @@ class Controller{
         };
         Promise.all([Post.postsPerMonth(), Post.findAll(options)])
             .then(([{ count: postsPerMonth }, posts]) => {
-                console.log(posts[0].Tags);
+                // console.log(posts[0].Tags);
                 res.render('landing-page', { posts, formatDate, postsPerMonth });
             })
             .catch(err => {
@@ -181,7 +183,7 @@ class Controller{
     }
 
     static renderPostManagementPage(req, res) {
-        const UserId = 1;
+        const UserId = req.session.userId;
         const { title } = req.query;
         const options = {
             where: {
@@ -208,7 +210,7 @@ class Controller{
                     model: User,
                     include: {
                         model: Profile,
-                        attributes: ['fullName', 'lastName']
+                        attributes: ['firstName', 'lastName']
                     }
                 },
                 {
@@ -217,7 +219,7 @@ class Controller{
                     attributes: ['username'],
                     include: {
                         model: Profile,
-                        attributes: ['fullName', 'lastName']
+                        attributes: ['firstName', 'lastName']
                     },
                     through: {
                         attributes: ['content']
@@ -248,7 +250,7 @@ class Controller{
     }
 
     static handleAddPost(req, res) {
-        const UserId = 1;
+        const UserId = req.session.userId;
         let { title, description, imageUrl, tags } = req.body;
         tags = tags.split(',');
         Post.create({ title, description, imageUrl, UserId })
@@ -262,7 +264,7 @@ class Controller{
                     });
             })
             .then(() => {
-                res.redirect('/');
+                res.redirect('/posts');
             })
             .catch(err => {
                 console.error(err);
@@ -298,7 +300,7 @@ class Controller{
     }
 
     static handleEditPost(req, res) {
-        const UserId = 1;
+        const UserId = req.session.userId;
         const { id } = req.params;
         let { title, description, imageUrl, tags } = req.body;
         const options = { include: Tag };
@@ -375,7 +377,7 @@ class Controller{
     static addComment(req, res) {
         const { content } = req.body;
         const { id } = req.params;
-        const UserId = 1;
+        const UserId = req.session.userId;
         Comment.create({ content, PostId: id, UserId })
             .then(() => {
                 res.redirect(`/posts/detail/${id}`);

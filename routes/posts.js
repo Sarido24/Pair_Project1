@@ -3,6 +3,7 @@ const router = express.Router();
 const Controller = require('../controllers/controller');
 
 router.get('/', Controller.renderPostManagementPage);
+router.get('/landing-page', Controller.showLandingPage);
 router.get('/add', Controller.renderAddPost);
 router.post('/add', Controller.handleAddPost);
 router.get('/edit/:id', Controller.renderEditPost);
