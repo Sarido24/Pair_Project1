@@ -23,6 +23,21 @@ class Controller {
       });
   }
 
+  static renderPostManagementPage(req, res) {
+    const UserId = 1;
+    const options = {
+      include: Post
+    };
+    User.findByPk(UserId, options)
+      .then(user => {
+        res.render('post-management', { posts: user.Posts });
+      })
+      .catch(err => {
+        console.error(err);
+        res.send(err);
+      });
+  }
+
   static postDetail(req, res) {
     const { id } = req.params;
     const { error } = req.query;
@@ -91,6 +106,42 @@ class Controller {
         console.error(err);
         res.send(err);
       });
+  }
+
+  static deletePost(req, res) {
+    const { id } = req.params;
+    const options = {
+      include: [Tag, { model: User, as: 'UserComments' }]
+    };
+    let postToBeRemoved;
+    Post.findByPk(+id, options)
+      .then(post => {
+        postToBeRemoved = post;
+        // console.log(post.Tags, '<<<');
+        // console.log(post.UserComments, '<<<');
+        return Promise.all([
+          post.removeTags(post.Tags),
+          post.removeUserComments(post.UserComments)
+        ]);
+      })
+      .then(() => {
+        return postToBeRemoved.destroy();
+      })
+      .then(() => {
+        res.redirect('/posts');
+      })
+      .catch(err => {
+        console.log(err);
+        res.send(err);
+      })
+    // Post.destroy(options)
+    //   .then(() => {
+    //     res.redirect('/posts');
+    //   })
+    //   .catch(err => {
+    //     console.error(err);
+    //     res.send(err);
+    //   })
   }
 
   static addComment(req, res) {
