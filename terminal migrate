@@ -1,0 +1,8 @@
+///migrate User///
+npx sequelize-cli model:generate --name User --attributes username:string,password:string,email:string,role:string
+
+///migrate Profile///
+npx sequelize-cli model:generate --name Profile --attributes fullName:string,lastName:string,age:integer,phone:string
+
+///migrate Post///
+npx sequelize-cli model:generate --name Post --attributes title:string,imageUrl:string,description:text,UserId:integer
