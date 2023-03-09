@@ -24,7 +24,7 @@
     <h2 class="text-center">Latest Posts</h2>
     <div class="row gap-5 justify-content-center" id="latest-posts">
       <% posts.forEach(post => { %>
-        <div class="post col-sm-auto border" onclick="window.location.href='/posts/detail/<%= post.id %>'">
+        <div class="post col-sm-auto border rounded px-4 py-4" onclick="window.location.href='/posts/detail/<%= post.id %>'">
           <h3 class="post-title text-center">
             <%= post.title %>
           </h3>
@@ -35,13 +35,16 @@
               Posted by: <%= post.User.username %>
             <% } %>
           </p>
-          <p class="post-timestamp">
+          <p class="post-timestamp mb-0">
             Posted at: <%= formatDate(post.createdAt) %>
+          </p>
+          <p class="post-tags">
+            Tags: <%= post.Tags.map(tag => tag.name).join(', ') %>
           </p>
           <div class="post-image d-flex justify-content-center">
             <img class="img-fluid img-thumbnail" src="<%= post.imageUrl %>" alt="An image related to the post <%= post.title %>">
           </div>
-          <p class="post-description">
+          <p class="post-description mt-3">
             <%= post.shortDesc() %>
           </p>
         </div>

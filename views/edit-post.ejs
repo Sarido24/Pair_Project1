@@ -14,6 +14,9 @@
     <h1 class="mt-4">Edit Post</h1>
   </header>
   <main>
+    <% errors?.split(',').forEach(error => { %>
+      <p class="text-danger px-5"><%= error %></p>
+    <% }); %>
     <form method="post" class="px-5">
       <label class="form-label" for="title">Title</label>
       <input class="form-control mb-3" type="text" name="title" value="<%= post.title %>" id="title">

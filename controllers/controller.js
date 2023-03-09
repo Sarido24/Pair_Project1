@@ -6,17 +6,26 @@ class Controller {
   static home(req, res) {
     const options = {
       order: [['createdAt', 'DESC']],
-      include: {
-        model: User,
-        include: {
-          model: Profile,
-          attributes: ['fullName', 'lastName']
+      include: [
+        {
+          model: User,
+          include: {
+            model: Profile,
+            attributes: ['fullName', 'lastName']
+          }
+        },
+        {
+          model: Tag,
+          attributes: ['name'],
+          through: {
+            attributes: []
+          }
         }
-      }
+      ]
     };
     Promise.all([Post.postsPerMonth(), Post.findAll(options)])
       .then(([{ count: postsPerMonth }, posts]) => {
-        console.log(postsPerMonth.find(el => el.date_part === 3));
+        console.log(posts[0].Tags);
         res.render('home', { posts, formatDate, postsPerMonth });
       })
       .catch(err => {
@@ -88,7 +97,8 @@ class Controller {
   }
 
   static renderAddPost(req, res) {
-    res.render('add-post');
+    const { errors } = req.query;
+    res.render('add-post', { errors });
   }
 
   static handleAddPost(req, res) {
@@ -110,12 +120,17 @@ class Controller {
       })
       .catch(err => {
         console.error(err);
+        if (err.name === 'SequelizeValidationError') {
+          const errors = err.errors.map(error => error.message);
+          return res.redirect(`/posts/add?errors=${errors}`);
+        }
         res.send(err);
       });
   }
 
   static renderEditPost(req, res) {
     const { id } = req.params;
+    const { errors } = req.query;
     const options = {
       include: {
         model: Tag,
@@ -128,7 +143,7 @@ class Controller {
     Post.findByPk(+id, options)
       .then(post => {
         const tags = post.Tags.map(tag => tag.name);
-        res.render('edit-post', { post, tags });
+        res.render('edit-post', { post, tags, errors });
       })
       .catch(err => {
         console.error(err);
@@ -166,17 +181,12 @@ class Controller {
       })
       .catch(err => {
         console.error(err);
+        if (err.name === 'SequelizeValidationError') {
+          const errors = err.errors.map(error => error.message);
+          return res.redirect(`/posts/edit/${id}?errors=${errors}`);
+        }
         res.send(err);
-      })
-    // Post.update({ title, description, imageUrl }, options)
-    //   .then(post => {
-    //     console.log(post);
-    //     res.send(post);
-    //   })
-    //   .catch(err => {
-    //     console.error(err);
-    //     res.send(err);
-    //   })
+      });
   }
 
 
