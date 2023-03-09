@@ -3,7 +3,7 @@ const { User, Profile, Post, Tag, Comment } = require('../models')
 const formatDate = require('../helpers/formatDate');
 
 class Controller {
-  static home(req, res) {
+  static showLandingPage(req, res) {
     const options = {
       order: [['createdAt', 'DESC']],
       include: [
@@ -26,7 +26,7 @@ class Controller {
     Promise.all([Post.postsPerMonth(), Post.findAll(options)])
       .then(([{ count: postsPerMonth }, posts]) => {
         console.log(posts[0].Tags);
-        res.render('home', { posts, formatDate, postsPerMonth });
+        res.render('landing-page', { posts, formatDate, postsPerMonth });
       })
       .catch(err => {
         console.error(err);
