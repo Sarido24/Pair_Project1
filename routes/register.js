@@ -37,15 +37,15 @@ routerRegister.post('/posts/comment/:id', Controller.addComment);
  
  ////routes yang bawah untuk admin aja//////
 
-// routerRegister.use(function(req, res, next){
-//     // console.log(req.session);
-//     if(req.session.username && req.session.role !== "admin"){
-//         const error = "Anda tidak memiliki akses!!"
-//         res.redirect(`/register?error=${error}`)
-//     }else{
-//         next()
-//     }
-// })
+routerRegister.use(function(req, res, next){
+    // console.log(req.session);
+    if(req.session.username && req.session.role !== "admin"){
+        const error = "Anda tidak memiliki akses!!"
+        res.redirect(`/register?error=${error}`)
+    }else{
+        next()
+    }
+})
 
 
 

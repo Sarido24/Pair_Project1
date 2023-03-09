@@ -57,7 +57,7 @@ class Controller{
                     req.session.username = dataUser.username
                     req.session.role = dataUser.role
                     req.session.userId = dataUser.id
-                    return res.redirect('/home')
+                    return res.redirect('/')
                 }else{
                     const error = "Password yang anda masukkan salah!" 
                     return res.redirect(`/login?error=${error}`)
@@ -137,7 +137,7 @@ class Controller{
 
         )
         .then(()=>{
-            res.redirect('/home')
+            res.redirect('/userProfile')
         })
         .catch((err)=>{
             res.send(err)
