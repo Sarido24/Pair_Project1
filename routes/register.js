@@ -17,17 +17,15 @@ routerRegister.use(function(req, res, next){
         next()
     }
 })
+routerRegister.get('/', Controller.showLandingPage);
 routerRegister.get('/home', Controller.home)
 routerRegister.get('/userProfile', Controller.userProfile)
 routerRegister.get('/addToProfile', Controller.addToProfile)
-routerRegister.post('/addToProfile/:id', Controller.postAddToProfile)
-
 routerRegister.get('/logout', Controller.logout)
-
 routerRegister.get('/posts', Controller.renderPostManagementPage);
-routerRegister.get('/', Controller.showLandingPage);
 routerRegister.get('/posts/add', Controller.renderAddPost);
 routerRegister.post('/posts/add', Controller.handleAddPost);
+routerRegister.post('/addToProfile/:id', Controller.postAddToProfile)
 routerRegister.get('/posts/edit/:id', Controller.renderEditPost);
 routerRegister.post('/posts/edit/:id', Controller.handleEditPost);
 routerRegister.get('/posts/detail/:id', Controller.postDetail);
