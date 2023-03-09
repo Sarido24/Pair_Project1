@@ -5,21 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 </head>
 <body>
     <h1>Add  Profile</h1>
+    
     <form action="/addToProfile/<%= data.id %>" method="post">
-        <p>First Name </p>
-        <input type="text" value="<%= data.firstName && data.firstName %>" name="firstName">
-        <p>Last Name</p>
-        <input type="text" value="<%= data.lastName && data.lastName %>" placeholder="example: Simanullang" name="lastName">
-        <p>Age</p>
-        <input type="number" value="<%= data.age && data.age %>" placeholder="example: 17" name="age">
-        <p>Phone</p>
-        <input type="text" value="<%= data.phone && data.phone %>" placeholder="example: 0821...." name="phone">
-        <br><br>
-        <button type="submit">Save</button>
-    </form>
+        <div class="mb-3">
+            <label  class="form-label">First Name</label>
+            <input type="text" class="form-control" name="firstName" value="<%= data.firstName && data.firstName %>">
+          </div>
+        <div class="mb-3">
+            <label  class="form-label">Last Name</label>
+            <input type="text" class="form-control" placeholder="example: Simanullang" name="lastName" value="<%= data.lastName && data.lastName %>">
+          </div>
+        <div class="mb-3">
+            <label  class="form-label">Age</label>
+            <input type="number" class="form-control" placeholder="example: 17" name="age" value="<%= data.age && data.age %>">
+          </div>
+        <div class="mb-3">
+            <label  class="form-label">Phone</label>
+            <input type="text" class="form-control" placeholder="example: 0821...." name="phone" value="<%= data.phone && data.phone %>">
+          </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+      <br>
+      <a class="btn btn-secondary" href="/userProfile">Cancel</a>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </body>
 </html>
-<%= console.log(data); %>

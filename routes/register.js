@@ -41,7 +41,7 @@ routerRegister.use(function(req, res, next){
     // console.log(req.session);
     if(req.session.username && req.session.role !== "admin"){
         const error = "Anda tidak memiliki akses!!"
-        res.redirect(`/register?error=${error}`)
+        res.redirect(`/login?error=${error}`)
     }else{
         next()
     }
