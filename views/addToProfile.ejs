@@ -10,13 +10,13 @@
     <h1>Add  Profile</h1>
     <form action="/addToProfile/<%= data.id %>" method="post">
         <p>First Name </p>
-        <input type="text" value="<%= data.firstName %>" name="firstName">
+        <input type="text" value="<%= data.firstName && data.firstName %>" name="firstName">
         <p>Last Name</p>
-        <input type="text" placeholder="example: Simanullang" name="lastName">
+        <input type="text" value="<%= data.lastName && data.lastName %>" placeholder="example: Simanullang" name="lastName">
         <p>Age</p>
-        <input type="number" placeholder="example: 17" name="age">
+        <input type="number" value="<%= data.age && data.age %>" placeholder="example: 17" name="age">
         <p>Phone</p>
-        <input type="text" placeholder="example: 0821...." name="phone">
+        <input type="text" value="<%= data.phone && data.phone %>" placeholder="example: 0821...." name="phone">
         <br><br>
         <button type="submit">Save</button>
     </form>
