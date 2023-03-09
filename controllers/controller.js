@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { User, Profile, Post, Tag, Comment } = require('../models')
 const formatDate = require('../helpers/formatDate');
 
@@ -13,9 +14,10 @@ class Controller {
         }
       }
     };
-    Post.findAll(options)
-      .then(posts => {
-        res.render('home', { posts, formatDate });
+    Promise.all([Post.postsPerMonth(), Post.findAll(options)])
+      .then(([{ count: postsPerMonth }, posts]) => {
+        console.log(postsPerMonth.find(el => el.date_part === 3));
+        res.render('home', { posts, formatDate, postsPerMonth });
       })
       .catch(err => {
         console.error(err);
@@ -25,12 +27,16 @@ class Controller {
 
   static renderPostManagementPage(req, res) {
     const UserId = 1;
+    const { title } = req.query;
     const options = {
-      include: Post
+      where: {
+        UserId
+      }
     };
-    User.findByPk(UserId, options)
-      .then(user => {
-        res.render('post-management', { posts: user.Posts });
+    if (title) options.where.title = { [Op.iLike]: `%${title}%` };
+    Post.findAll(options)
+      .then(posts => {
+        res.render('post-management', { posts, title });
       })
       .catch(err => {
         console.error(err);
@@ -107,6 +113,72 @@ class Controller {
         res.send(err);
       });
   }
+
+  static renderEditPost(req, res) {
+    const { id } = req.params;
+    const options = {
+      include: {
+        model: Tag,
+        attributes: ['name'],
+        through: {
+          attributes: []
+        }
+      }
+    };
+    Post.findByPk(+id, options)
+      .then(post => {
+        const tags = post.Tags.map(tag => tag.name);
+        res.render('edit-post', { post, tags });
+      })
+      .catch(err => {
+        console.error(err);
+        res.send(err);
+      })
+  }
+
+  static handleEditPost(req, res) {
+    const UserId = 1;
+    const { id } = req.params;
+    let { title, description, imageUrl, tags } = req.body;
+    const options = { include: Tag };
+    let postToBeUpdated;
+    tags = tags.split(',');
+    Post.findByPk(+id, options)
+      .then(post => {
+        console.log(post);
+        postToBeUpdated = post;
+        return post.removeTags(post.Tags);
+      })
+      .then(() => {
+        return Promise.all(tags.map(tag => Tag.findOne({ where: { name: tag } })));
+      })
+      .then(tagInstances => {
+        return Promise.all(tagInstances.map((tagInstance, i) => {
+          if (tagInstance) return postToBeUpdated.addTag(tagInstance);
+          return postToBeUpdated.createTag({ name: tags[i] });
+        }));
+      })
+      .then(() => {
+        return postToBeUpdated.update({ title, description, imageUrl });
+      })
+      .then(() => {
+        res.redirect(`/posts`);
+      })
+      .catch(err => {
+        console.error(err);
+        res.send(err);
+      })
+    // Post.update({ title, description, imageUrl }, options)
+    //   .then(post => {
+    //     console.log(post);
+    //     res.send(post);
+    //   })
+    //   .catch(err => {
+    //     console.error(err);
+    //     res.send(err);
+    //   })
+  }
+
 
   static deletePost(req, res) {
     const { id } = req.params;

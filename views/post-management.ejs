@@ -27,6 +27,10 @@
     <h1>Manage Posts</h1>
   </header>
   <a class="btn btn-primary" href="/posts/add">Add New Post</a>
+  <form method="get">
+    <input type="text" name="title" value="<%= title %>">
+    <button class="btn btn-secondary" type="submit">Search</button>
+  </form>
   <main class="container-sm">
     <table>
       <thead>

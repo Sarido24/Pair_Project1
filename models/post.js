@@ -12,7 +12,15 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Post.belongsTo(models.User)
       Post.belongsToMany(models.Tag, { through: models.TagPost })
-      Post.belongsToMany(models.User, { through: models.Comment, as: 'UserComments'})
+      Post.belongsToMany(models.User, { through: models.Comment, as: 'UserComments' })
+    }
+
+    static postsPerMonth() {
+      const options = {
+        attributes: [sequelize.fn('date_part', 'month', sequelize.col('createdAt'))],
+        group: [[sequelize.fn('date_part', 'month', sequelize.col('createdAt'))]]
+      }
+      return Post.findAndCountAll(options);
     }
 
     shortDesc() {
