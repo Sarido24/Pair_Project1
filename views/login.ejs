@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-</head>
-<body>
-    
-<h1 class="text-center mb-4">Login </h1>
-<div class="text-center" style="color: red;">
-    <label><%= error %></label>
 
-</div>
-<form method="post" action="/login">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+
+<body>
+
+  <h1 class="text-center mb-4">Login </h1>
+  <div class="text-center" style="color: red;">
+    <label>
+      <%= error %>
+    </label>
+
+  </div>
+  <form method="post" action="/login">
     <div class="mx-auto" style="width: 200px;">
-        <label  class="form-label">username</label>
-        <input type="text" class="form-control rounded-left" name="username">
-      </div>
+      <label class="form-label">username</label>
+      <input type="text" class="form-control rounded-left" name="username">
+    </div>
     <div class="mx-auto" style="width: 200px;">
-      <label  class="form-label">Password</label>
+      <label class="form-label">Password</label>
       <input type="password" class="form-control" name="password">
     </div><br>
     <div class="mx-auto" style="width: 120px;">
-        <button  type="submit" class="btn btn-primary" style="width: 125px; ">Login</button>
+      <button type="submit" class="btn btn-primary" style="width: 125px; ">Login</button>
     </div>
   </form>
 
   <br>
-<div class="mx-auto" style="width: 120px;" >
+  <div class="mx-auto" style="width: 120px;">
     <a class="btn btn-secondary" style="width: 125px;" href="/register">Register</a>
-</div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+  </div>
+  <div class="mx-auto mt-4" style="width: 120px;">
+    <a class="btn btn-secondary" style="width: 125px;" href="/">Home</a>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
 </body>
+
 </html>
