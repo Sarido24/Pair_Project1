@@ -11,7 +11,7 @@ routerRegister.post('/login', Controller.postLogin)
 routerRegister.use(function(req, res, next){
     // console.log(req.session);
     if(!req.session.username){
-        const error = "Login dulu Cokkk!!"
+        const error = "Mohon login dulu!"
         res.redirect(`/login?error=${error}`)
     }else{
         next()
