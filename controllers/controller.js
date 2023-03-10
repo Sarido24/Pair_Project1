@@ -148,7 +148,27 @@ class Controller {
   }
 
   static update(req, res) {
-    res.render('update')
+    Profile.findAll({ include: User })
+      .then(profiles => {
+        res.render('update', { profiles });
+      })
+      .catch(err => {
+        console.error(err);
+        res.send(err);
+      })
+  }
+
+  static updateRole(req, res) {
+    const { role } = req.body;
+    const { id } = req.params;
+    User.update({ role }, { where: { id: +id } })
+      .then(() => {
+        res.redirect('/update');
+      })
+      .catch(err => {
+        console.error(err);
+        res.send(err);
+      })
   }
 
   // For posts

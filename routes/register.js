@@ -50,6 +50,7 @@ routerRegister.use(function(req, res, next){
 
 
 routerRegister.get('/update', Controller.update)
+routerRegister.post('/update/:id', Controller.updateRole)
 
 
 module.exports = routerRegister
