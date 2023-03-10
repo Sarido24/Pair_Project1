@@ -44,7 +44,8 @@ class Controller {
   }
   static login(req, res) {
     const { error } = req.query
-    res.render('login', { error })
+    const isLoggedIn = req.session.username ? true : false;
+    res.render('login', { error, isLoggedIn })
   }
   static postLogin(req, res) {
     const { username, password } = req.body
