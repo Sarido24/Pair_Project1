@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Post)
       User.hasOne(models.Profile)
+      User.belongsToMany(models.Post, { through: models.Comment, as: 'PostComments' })
     }
   }
   User.init({
